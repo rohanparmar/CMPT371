@@ -12,21 +12,24 @@
 
 def maskInterpreter(netmask):
     #print(sum(bin(int(x)).count('1') for x in netmask.split('.')))
-    print(format(int(netmask.split('.')[0]), "b"))
+    #print(format(int(netmask.split('.')[0]), "b"))
     return sum(bin(int(x)).count('1') for x in netmask.split('.'))
 
     #from stackoverflow: 
     #https://stackoverflow.com/questions/38085571/how-use-netaddr-to-convert-subnet-mask-to-cidr-in-python
 
-print(maskInterpreter('201.123.32.0'))
-
+#print(maskInterpreter('201.123.32.0'))
+print(bin(1001 & 1111).replace('b', ''))
 
 #for each packet:
     #Read IP destination 
     #Convert IP to binary
         #IP_binary = format(int(IP_address.split('.')[0]), "b")
     #Implement forwarding algorithm
+        #Do binary addition on destination and mask
+            #ie: print(bin(destination & mask).replace('b', ''))
         #Use the metric (metric field - either 1 or 0)
+
     #Output the following
         #print("The destination IP address is " + destination_address)
         #print("The next hop IP address is " + next_hop_address)
