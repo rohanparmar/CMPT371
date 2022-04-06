@@ -22,15 +22,15 @@ print(maskInterpreter('201.123.32.0'))
 
 
 #for each packet:
-    #Read IP desintation 
+    #Read IP destination 
     #Convert IP to binary
         #IP_binary = format(int(IP_address.split('.')[0]), "b")
     #Implement forwarding algorithm
-        #Use the metric
+        #Use the metric (metric field - either 1 or 0)
     #Output the following
         #print("The destination IP address is " + destination_address)
         #print("The next hop IP address is " + next_hop_address)
-        #print("The prot the packet will leave through is " + PORT)
+        #print("The port the packet will leave through is " + PORT)
 
     #After forwarding a packet
         #Ask if the user wishes to forward another packet
