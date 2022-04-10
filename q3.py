@@ -1,44 +1,58 @@
-#Read text input
-#Sort Rows by mask length
-#Print sorted routing table
+def andOperator(address, netmask):
+    return (bin(address & netmask).replace('b', ''))
 
-#For each packet
-#Read IP 
-#Convert to binary
-#Implement the forwarding algorithm
+def applyMask(address, netmask):
+    addressList = address.split('.')
+    addressList = list(map(int, addressList))
+    netmaskList = netmask.split('.')
+    netmaskList = list(map(int, netmaskList))
 
+    outputAddress = []
+    for x in range(4):
+        outputAddress.append(netmaskList[x] & addressList[x])
+    outputAddress = ".".join([str(int) for int in outputAddress])
+    return outputAddress
 
-#print(format(255, "b"))
+def addressToBinary(address):
+    addressBinaryList = []
+    for x in range(4):
+        addressBinaryList.append(int(address.split('.')[x]))
+        addressBinaryList[x] = '{:08b}'.format(addressBinaryList[x])
 
-def maskInterpreter(netmask):
-    #print(sum(bin(int(x)).count('1') for x in netmask.split('.')))
-    #print(format(int(netmask.split('.')[0]), "b"))
+    return ".".join([str(int) for int in addressBinaryList])
+
+def netmaskInt(netmask): 
     return sum(bin(int(x)).count('1') for x in netmask.split('.'))
 
-    #from stackoverflow: 
-    #https://stackoverflow.com/questions/38085571/how-use-netaddr-to-convert-subnet-mask-to-cidr-in-python
-
-#print(maskInterpreter('201.123.32.0'))
-print(bin(1001 & 1111).replace('b', ''))
-
-#for each packet:
-    #Read IP destination 
-    #Convert IP to binary
-        #IP_binary = format(int(IP_address.split('.')[0]), "b")
+def route(address, netmask):
     #Implement forwarding algorithm
-        #Do binary addition on destination and mask
-            #ie: print(bin(destination & mask).replace('b', ''))
-        #Use the metric (metric field - either 1 or 0)
-
+    destination_address = applyMask(address, netmask)
+    #Use the metric (metric field - either 1 or 0)
+    next_hop_address = 'address'
+    PORT = 3000
     #Output the following
-        #print("The destination IP address is " + destination_address)
-        #print("The next hop IP address is " + next_hop_address)
-        #print("The port the packet will leave through is " + PORT)
+    print("The destination IP address is", destination_address)
+    print("The next hop IP address is", next_hop_address)
+    print("The port the packet will leave through is", PORT)
 
-    #After forwarding a packet
-        #Ask if the user wishes to forward another packet
-        #if no: terminate program
-        #if yes
-            #Ask for destination IP address of next packet
-            #route next packet
-            #do the last four steps again
+
+
+def routerStart():
+    #Read routing table
+    #Sort routing table
+    #Print routing table
+    running = True
+    
+
+routerStart()
+
+input_address = input("Enter Address: ")
+running = True
+
+while running:
+    route(input_address, '255.255.255.0')
+    close = input("Route another packet? (yes/no) ")
+    if(close == "no"):
+        running = False
+    else:
+        input_address = input("Enter Address: ")
