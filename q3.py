@@ -27,31 +27,19 @@ def netmaskInt(netmask):
 def getNetmaskFromRow(row):
     return netmaskInt(row[2])
 
-def sortTable(table):
-    return sorted(table, key=getNetmaskFromRow)
-
 def findRoute(address, routingTable):
-    #Search routing table and find best route
-
     addressBitMask = netmaskInt(address)
-    
-    #FIND THE CLOSEST BITMASK MATCH
 
-    # for x in range(len(routingTable)):
-    #     if netmaskInt(routingTable[x][2]) == addressBitMask:
-    #         return routingTable[x][2]
-    #if there is no exact address match:
-        #find the mask that most matches it
-    #return min(myList, key=lambda x:abs(x-myNumber))
-    
+    #FIND THE CLOSEST BITMASK MATCH
+    #Either find first element 
+
     #SAMPLE
     return '1.1.1.0'
 
 def route(address, routingTable):
-    #get netmask that best matches the address and apply it
     netmask = findRoute(address, routingTable)
     next_hop_address = applyMask(address, netmask)
-    #Use the metric (metric field - either 1 or 0)
+
     PORT = 3000
 
     print("\tThe destination IP address is", address)
@@ -65,19 +53,19 @@ def routerStart():
     #Put all the rows into a matrix
 
     #SAMPLE TABLE
-    routingTable = [[ '201.123.32.0', '*', '255.255.254.0', 0, 'eth1' ], [ '201.123.64.0', '123.122.0.2', '255.255.192.0', 1, 'eth2'],[ '123.123.123.123', '123.123.0.2', '255.255.192.0', 0, 'eth3'], [ '123.123.123.123', '*', '255.255.248.0', 0, 'eth4'] ]
+    routingTable = [[ '201.123.32.0', '*', '255.255.254.0', 0, 'eth1' ], 
+                    [ '201.123.64.0', '123.122.0.2', '255.255.192.0', 1, 'eth2'],
+                    [ '123.123.123.123', '123.123.0.2', '255.255.192.0', 0, 'eth3'], 
+                    [ '123.123.123.123', '*', '255.255.248.0', 0, 'eth4'] 
+                ]
 
-    #Sort routing table by mask length (netmaskInt(netmask))
-    routingTable = sortTable(routingTable)
+    routingTable.sort(key=getNetmaskFromRow)
 
-
-
-    #Print routing table
     print('ROUTING TABLE: ')
     for x in range(len(routingTable)):
         print('\t', routingTable[x])
-
     print('')
+
     return routingTable
 
 routingTable = routerStart()
@@ -85,9 +73,6 @@ input_address = input("Enter Address: ")
 running = True
 
 while running:
-    #LOGIC: Read in address, find the right route to send it through, print
-    
-    #route_address = findRoute(input_address, routingTable)
     route(input_address, routingTable)
 
     close = input("Route another packet? (yes/no) ")
