@@ -37,17 +37,25 @@ def netmaskInt(netmask):
 def getNetmaskFromRow(row):
     return netmaskInt(row[2])
 
-def sortTable(table):
-    return sorted(table, key=getNetmaskFromRow)
-
 def findRoute(address, routingTable):
     #Search routing table and find best route
     addressBitMask = netmaskInt(address)
+
+    maskList = []
+
     for x in range(len(routingTable)):
         if netmaskInt(routingTable[x][2]) == addressBitMask:
             return routingTable[x][2]
+        else:
+            maskList.append(addressBitMask - netmaskInt(routingTable[x][2]))
 
-    return '255.255.255.0'
+    maskList = [abs(ele) for ele in maskList]
+
+    index_min = min(range(len(maskList)), key=maskList.__getitem__)
+
+    return routingTable[index_min][2]
+
+
 
 def route(address, routingTable):
     netmask = findRoute(address, routingTable)
@@ -65,7 +73,6 @@ def route(address, routingTable):
 
 def routerStart():
     routingTable = readTable()
-    routingTable = sortTable(routingTable)
     routingTable.sort(key=getNetmaskFromRow)
 
     print('ROUTING TABLE: ')
