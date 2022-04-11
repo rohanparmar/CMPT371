@@ -40,17 +40,6 @@ def getNetmaskFromRow(row):
 def sortTable(table):
     return sorted(table, key=getNetmaskFromRow)
 
-def route(address, netmask):
-    destination_address = applyMask(address, netmask)
-    #Use the metric (metric field - either 1 or 0)
-    next_hop_address = '{address}'
-    PORT = 3000
-
-    print("\tThe destination IP address is", destination_address)
-    print("\tThe next hop IP address is", next_hop_address)
-    print("\tThe port the packet will leave through is", PORT)
-    print('')
-
 def findRoute(address, routingTable):
     #Search routing table and find best route
     addressBitMask = netmaskInt(address)
@@ -58,18 +47,32 @@ def findRoute(address, routingTable):
         if netmaskInt(routingTable[x][2]) == addressBitMask:
             return routingTable[x][2]
 
-    return 'find route'
+    return '255.255.255.0'
+
+def route(address, routingTable):
+    netmask = findRoute(address, routingTable)
+    print(netmask,"NETMASK")
+    next_hop_address = applyMask(address, netmask)
+
+    PORT = 3000
+
+    print("\tThe destination IP address is", address)
+    print("\tThe next hop IP address is", next_hop_address)
+    print("\tThe port the packet will leave through is", PORT)
+    print('')
+
+
 
 def routerStart():
     routingTable = readTable()
     routingTable = sortTable(routingTable)
+    routingTable.sort(key=getNetmaskFromRow)
 
-    #Print routing table
     print('ROUTING TABLE: ')
     for x in range(len(routingTable)):
         print('\t', routingTable[x])
-
     print('')
+
     return routingTable
 
 routingTable = routerStart()
@@ -78,8 +81,7 @@ running = True
 
 while running:
     #LOGIC: Read in address, find the right route to send it through, print
-    destination_address = findRoute(input_address, routingTable)
-    route(input_address, '255.255.255.0')
+    route(input_address, routingTable)
 
     close = input("Route another packet? (yes/no) ")
     if(close == "no"):
