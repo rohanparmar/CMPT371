@@ -1,5 +1,3 @@
-import numpy as np
-
 def readTable():
     tableData = []
     with open("tableInput.txt", "r") as f:
@@ -9,8 +7,6 @@ def readTable():
                 tableData.append(line[0:-1].split("\t"))
 
     return tableData
-
-
 
 def andOperator(address, netmask):
     return (bin(address & netmask).replace('b', ''))
@@ -65,17 +61,8 @@ def findRoute(address, routingTable):
     return 'find route'
 
 def routerStart():
-    #Read routing table
-
-    #Put all the rows into a matrix
-
-    #SAMPLE TABLE
-   # routingTable = [[ '201.123.32.0', '*', '255.255.254.0', 0, 'eth1' ], [ '201.123.64.0', '123.122.0.2', '255.255.192.0', 1, 'eth2'], [ '123.123.123.123', '123.123.0.2', '255.255.192.0', 0, 'eth3'], [ '123.123.123.123', '*', '255.255.248.0', 0, 'eth4']]
-    
     routingTable = readTable()
-
-    #Sort routing table by mask length (netmaskInt(netmask))
-#    routingTable = sortTable(routingTable)
+    routingTable = sortTable(routingTable)
 
     #Print routing table
     print('ROUTING TABLE: ')
